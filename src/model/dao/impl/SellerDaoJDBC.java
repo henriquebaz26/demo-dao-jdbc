@@ -95,8 +95,29 @@ PreparedStatement pst = null;
 	}
 
 	@Override
-	public void deleteById(Seller obj) {
-		// TODO Auto-generated method stub
+	public void deleteById(Integer id) {
+		
+		PreparedStatement pst = null;
+				
+		try {
+			
+			String sql = "DELETE FROM seller WHERE Id = ?";
+			
+			pst = conn.prepareStatement(sql);
+			
+			pst.setInt(1, id);
+			
+			int rowsAffected = pst.executeUpdate();
+			
+			if (rowsAffected == 0) {
+				throw new DbException("The seller ID does not exist in the database.");
+			}
+			
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			 DB.closeStatement(pst);
+		}
 		
 	}
 
